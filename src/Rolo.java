@@ -14,10 +14,15 @@ class Rolo implements Runnable {
                 System.out.print("\rGirando... " + resultado);
                 Thread.sleep(200); // Tempo entre cada troca de símbolo
             }
+            System.out.println(" ");
             System.out.println(" -> Parou em: " + resultado);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public String[] getSimbolos() {
+        return simbolos;
     }
 
     public String getResultado() {
