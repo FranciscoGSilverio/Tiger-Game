@@ -4,28 +4,34 @@ import java.util.Scanner;
 class Rolo implements Runnable {
     private String[] simbolos = {"🐅", "🍒", "🔔", "💰", "🍀"};
     private String resultado;
-    private Random random = new Random();
+    private volatile boolean girando = true; // Control flag
 
+
+    public Rolo() {
+        this.resultado = simbolos[new Random().nextInt(simbolos.length)];
+    }
     @Override
     public void run() {
+        int index = 0; // Start from the first symbol
         try {
-            for (int i = 0; i < 10; i++) { // Simula os giros do rolo
-                resultado = simbolos[random.nextInt(simbolos.length)];
+            while (girando) { // Keep cycling through symbols
+                resultado = simbolos[index];
                 System.out.print("\rGirando... " + resultado);
-                Thread.sleep(200); // Tempo entre cada troca de símbolo
+                Thread.sleep(200); // Simulate time passing
+
+                index = (index + 1) % simbolos.length; // Cycle through symbols
             }
-            System.out.println(" ");
-            System.out.println(" -> Parou em: " + resultado);
+            System.out.println("\n -> Parou em: " + resultado);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public String[] getSimbolos() {
-        return simbolos;
-    }
-
     public String getResultado() {
         return resultado;
+    }
+
+    public void parar() {
+        girando = false; // Stop the loop naturally
     }
 }

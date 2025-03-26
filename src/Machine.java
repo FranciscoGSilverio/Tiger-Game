@@ -16,20 +16,37 @@ public class Machine {
         this.ganhou = false;
         this.premio = 0;
 
-        // Iniciando os rolos
+        // Start spinning
         t1.start();
         t2.start();
         t3.start();
 
+        // Stop each reel at a random delay
+        pararRolo(rolo1, t1);
+        this.sleep();
+        pararRolo(rolo2, t2);
+        this.sleep();
+        pararRolo(rolo3, t3);
+
+        // Check the final result
+        verificarResultado(aposta);
+    }
+
+    private void pararRolo(Rolo rolo, Thread t) {
+        rolo.parar(); // Stop the reel
         try {
-            t1.join();
-            t2.join();
-            t3.join();
+            t.join(); // Wait for the thread to finish
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
 
-        verificarResultado(aposta);
+    private void sleep() {
+        try {
+            Thread.sleep(1500 ); // Random delay between 500ms - 1500ms
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void verificarResultado(double aposta) {
