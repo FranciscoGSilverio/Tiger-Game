@@ -1,29 +1,19 @@
 import java.util.Random;
-import java.util.Scanner;
 
 class Rolo implements Runnable {
     private String[] simbolos = {"🐅", "🍒", "🔔", "💰", "🍀"};
-    private String resultado;
-    private volatile boolean girando = true; // Control flag
+    private String resultado = "❓";
+    private volatile boolean girando = true;
+    private final Random random = new Random();
 
-
-    public Rolo() {
-        this.resultado = simbolos[new Random().nextInt(simbolos.length)];
-    }
-    @Override
     public void run() {
-        int index = 0; // Start from the first symbol
-        try {
-            while (girando) { // Keep cycling through symbols
-                resultado = simbolos[index];
-                System.out.print("\rGirando... " + resultado);
-                Thread.sleep(200); // Simulate time passing
-
-                index = (index + 1) % simbolos.length; // Cycle through symbols
+        while (girando) {
+            resultado = simbolos[random.nextInt(simbolos.length)];
+            try {
+                Thread.sleep(100); // Spin speed
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            System.out.println("\n -> Parou em: " + resultado);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 
@@ -32,6 +22,6 @@ class Rolo implements Runnable {
     }
 
     public void parar() {
-        girando = false; // Stop the loop naturally
+        girando = false;
     }
 }
